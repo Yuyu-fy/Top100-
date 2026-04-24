@@ -1,2 +1,58 @@
 首先：关于class，private与public
+类（class）将数据和函数方法相结合，调用更方便（使用无需知道内部逻辑），同时信息更加安全（private）；
+class也使改动数据更方便（这一点类似于function）；可以继承（让新的class继承老class的功能，无需再重新写）和多态（在不同子类里面有不同功能）
+private和public的区别即为，外部能否调用或改变这个部分
 
+OK，那我们接下来就解决这道题目。
+题意：将两个非递减数组组合成一个非递减数组
+解答：
+第一种：
+最懒的做法，将两个数组直接合并后排序。
+class Solution {
+public:
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+        for(int i=m,j=0;i<m+n;++i)nums1[i]=nums2[j++];
+        sort(nums1.begin(),nums1.end());
+    }
+};
+但是有点慢，时间复杂度O（（m+n）log（m+n）），空间复杂度O（log（m+n））
+
+第二种方法：
+再开一个数组，一个个两两比较挑一个放进去，之前算法课作业有类似的题目，很简单懒的打了，直接抄leetcode解答了
+class Solution {
+public:
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+        int p1 = 0, p2 = 0;
+        int sorted[m + n];
+        int cur;
+        while (p1 < m || p2 < n) {
+            if (p1 == m) {
+                cur = nums2[p2++];
+            } else if (p2 == n) {
+                cur = nums1[p1++];
+            } else if (nums1[p1] < nums2[p2]) {
+                cur = nums1[p1++];
+            } else {
+                cur = nums2[p2++];
+            }
+            sorted[p1 + p2 - 1] = cur;
+        }
+        for (int i = 0; i != m + n; ++i) {
+            nums1[i] = sorted[i];
+        }
+    }
+};
+拿空间换时间，时间O（m+n），空间O（m+n）
+
+第三种方法：
+第二种方法另开一个数组是因为直接将nums2塞入nums1中很可能会覆盖nums1中的元素。那为什么不从后往前塞入呢？天才！
+class Solution {
+public:
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+        int i=m-1,j=n-1,k=n+m-1;
+        while(i>=0||j>=0){
+            if(i<0||j>=0&&nums1[i]<nums2[j])nums1[k--]=nums2[j--];
+            else nums1[k--]=nums1[i--];
+        }
+    }
+};
