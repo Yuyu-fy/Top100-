@@ -1,1 +1,35 @@
+27移除元素
 
+首先，题意：
+很简单，在数组中原地删除数组中的目标数字，返回剩余数字和数组
+
+解题思路：
+第一种方式，双指针。比较每一个数组中元素是否是目标数字，不是就存储进数组，是就不存
+class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+        int n=nums.size();
+        int left=0;
+        for(int right=0;right<n;++right){
+            if(nums[right]!=val)nums[left++]=nums[right];
+        }
+        return left;
+    }
+};
+
+第二种方法，就是将目标值和队伍末尾互换，我觉得这个方法比较麻烦，就直接抄leetcode的代码了
+class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+        int left = 0, right = nums.size();
+        while (left < right) {
+            if (nums[left] == val) {
+                nums[left] = nums[right - 1];
+                right--;
+            } else {
+                left++;
+            }
+        }
+        return left;
+    }
+};
