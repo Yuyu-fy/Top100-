@@ -1,0 +1,15 @@
+题意：很简单，在非严格递增数组中原地删除重复数字
+解答：
+和昨天那题几乎一模一样，懒的多说了
+解法同上道题第一种解法：
+    class Solution {
+public:
+    int removeDuplicates(vector<int>& nums) {
+        int n=nums.size();
+        int left=0;
+        for(int right=0;right<n;++right){
+            if(right==0||right>0&&nums[right]!=nums[right-1])nums[left++]=nums[right];
+        }
+        return left;
+    }
+};
