@@ -1,9 +1,12 @@
 题意：在一个有序数组中，如果一个数出现超过两次，则给他删减到只剩两次
-题解：其实很简单，还是双指针，只是判断条件变成当前数字和存储的数组的前两个是否相等的
+题解：其实很简单，还是双指针，只是判断条件变成当前数字和存储的数组的前两个是否相等的。并且特判一下n<=2的情况
 class Solution {
 public:
     int removeDuplicates(vector<int>& nums) {
         int n=nums.size();
+         if (n <= 2) {
+            return n;
+        }
         int j=2;
         for(int i=2;i<n;++i){
         if(nums[i]==nums[j-2])continue;
