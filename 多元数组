@@ -1,1 +1,15 @@
-
+题意：返回数组中的出现次数超过n/2次数的数
+解答：可以通过哈希解决，但是我想在这里记录的是时间复杂度O（n），空间复杂度为O（1）的方法
+方法：随机法，由于答案是出现次数超过一半的数，所以一次选中的概率为1/2，第n次选中的概率为1/2^n，又期望得到找到的情况是线性时间复杂度
+代码如下：
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        while(true){
+            int select=nums[rand()%nums.size()];
+            int cnt=0;
+            for(int num : nums) if(num==select)cnt++;
+            if(cnt>nums.size()/2)return select;
+        }
+    }
+};
