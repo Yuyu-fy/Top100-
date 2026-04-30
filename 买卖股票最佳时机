@@ -1,0 +1,14 @@
+题意：给一个数组，求后面的数比前面的数差值的最大值
+解答：很简单，一个循环遍历数组，维护前i个数中的最小值和当前做差的最大值这两个单变量
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int inf = 1e9;
+        int minprice = inf, maxprofit = 0;
+        for (int price: prices) {
+            maxprofit = max(maxprofit, price - minprice);
+            minprice = min(price, minprice);
+        }
+        return maxprofit;
+    }
+};
