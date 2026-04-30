@@ -1,0 +1,61 @@
+题意：让数组里的数字向右移动k位
+解答：
+本题希望我们用多种方法解答。
+第一种解答，最简单的就是再开一个数组然后填数字进去。时间O（n），空间O（n）
+这个方法懒得写了，用leetcode官方解答了
+class Solution {
+public:
+    void rotate(vector<int>& nums, int k) {
+        int n = nums.size();
+        vector<int> newArr(n);
+        for (int i = 0; i < n; ++i) {
+            newArr[(i + k) % n] = nums[i];
+        }
+        nums.assign(newArr.begin(), newArr.end());
+    }
+};
+nums.assign(newArr.begin(),newArr.end())含义是用newarr中的数覆盖nums；等同于nums=newArr
+
+第二种解答，是我比较偏好的写法，也符合题目希望我们在O（1）空间复杂度里解决问题的需求
+我们之所以需要另开一个数组是因为在移动数字的时候会覆盖之后的数，所以我们另开一个int类型的单变量保存被覆盖的数就可以了。
+那么第二个问题又来了，就是如何保证每一个数都被遍历到。
+首先是怎么判断一部分数已经遍历完毕进入循环，这个很简单，当前遍历到的下标和这轮遍历开始时的下标相同就可以证明一轮遍历完毕。
+最大的问题还是怎么确定都能遍历上。思路很简单，就是一部分数完成遍历之后，在初始下标+1，继续遍历就可以。但问题就是加几次。
+从start往后走，走回到start的情况是(start + t·k) % n = start，所以t=n/gcd（k,n）
+所以代码如下
+class Solution {
+public:
+    void rotate(vector<int>& nums, int k) {
+        int n=nums.size();
+        k%=n;
+        int cnt=gcd(n,k);
+        for(int i=0;i<cnt;++i){
+            int current=i;
+            int prev=nums[i];
+            do{
+                current=(current+k)%n;
+                swap(nums[current],prev);
+            }while(i!=current);
+        }
+    }
+};
+
+第三种解答感觉更加天才，我是第一次没想到。
+向右移动，就是把尾巴上的数字翻到前面，前面的数字挪到后面。那么久先让数组反转，然后让前k个数字反转，再让后n-k个数字反转就完成任务了。
+class Solution {
+public:
+    void reverse(vector<int>&nums,int start,int end){
+         while(start<end){
+            swap(nums[start],nums[end]);
+            start++;
+            end--;
+        }
+    }
+    void rotate(vector<int>& nums, int k) {
+       int n=nums.size();
+       k%=n;
+       reverse(nums,0,nums.size()-1);
+       reverse(nums,0,k-1);
+       reverse(nums,k,nums.size()-1);
+    }
+};
