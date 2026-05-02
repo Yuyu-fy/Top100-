@@ -1,0 +1,13 @@
+题意：每天的股票价格给出，可以多次买入卖出股票。但同一时间只能持有一股股票
+解答：
+这题比较简单就不用动态规划了。其实可以直接贪心做，如果今天比昨天价格高就卖出，低就不卖。这个算法可行是因为他只问最多可以赚多少钱，没问怎么操作。
+所以比如三天股票价格为3 1 5 7.本来应该是第二天买第四天卖，但是贪心是，5-1+7-5但是答案是一样的。
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int n=prices.size();
+        int ans=0;
+        for(int i=1;i<n;++i)ans+=max(0,prices[i]-prices[i-1]);
+        return ans;
+    }
+};
