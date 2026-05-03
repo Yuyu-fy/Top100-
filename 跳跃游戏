@@ -1,0 +1,18 @@
+题意：数组每个数据表示你最多可以向后移动多少个单位，从第0号下标开始，如果能移动到最后一个下标就1
+解答：
+很简单大模拟。但是如果是是一个个模拟，设置一个
+bool数组改成1，最差是10^5*10^4量级，会超时。那么就只标出来目前能到的最远位置就可以了。
+代码如下：
+class Solution {
+public:
+    bool canJump(vector<int>& nums) {
+        int n=nums.size();
+        int j=0,far=0;
+        do{
+             far=max(far,nums[j]+j);
+             j++;
+        }while(far>=j&&far<n-1);
+        if(far>=n-1)return 1;
+        return 0;
+    }
+};
