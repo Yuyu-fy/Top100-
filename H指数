@@ -1,0 +1,14 @@
+题意：找到数组中有至少k个大于等于k的数，找到这个最大的k值
+解答：
+先对数组进行排序。然后从大往小遍历，如果当前数大于h，证明至少找到h个比h大的数，则h++。
+我自己懒得写就用快排了，但是如果追求时间复杂度可以用计数排序对数组进行排序。
+class Solution {
+public:
+    int hIndex(vector<int>& citations) {
+        int n=citations.size();
+        sort(citations.begin(),citations.end());
+        int h=0;
+        for(int i=n-1;i>=0;--i)if(citations[i]>h)h++;
+        return h;
+    }
+};
