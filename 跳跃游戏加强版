@@ -1,0 +1,22 @@
+题意：数组内每个下标存储数据代表能向右移动的最大的距离，答案返回从0号下标移动到n-1号下标到最小步数
+解答：
+还是贪心。从0号下标开始，记录步数，起始点最远能到达的位置和最远位置
+如果遍历到起始点能到达的最远位置，那么更新最远位置然后步数++，就能得到答案
+class Solution {
+public:
+    int jump(vector<int>& nums) {
+        int n=nums.size();
+        int j=0,end=0;
+        int ans=0;
+        for(int i=0;i<n-1;++i){
+            if(j>=i){
+            j=max(j,i+nums[i]);
+            if(i==end){
+                end=j;
+                ++ans;
+            }
+            }
+        }
+        return ans;
+    }
+};
