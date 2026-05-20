@@ -46,3 +46,43 @@ RandomizedSet() {
 均匀整数分布：生成指定范围内的随机整数
 dist(0, 100) 表示生成 [0, 100] 的随机数
 自动处理边界，不会产生偏移
+
+
+接下来是插入和删除操作
+插入很简单，在数组尾部直接插入一个数进来，然后哈希表里存储它的下标和数值
+删除就是将数组尾巴的数覆盖val，然后将数组尾部删除
+class RandomizedSet {
+public:
+    RandomizedSet() {
+       srand((unsigned)time(NULL)); 
+    }
+    
+    bool insert(int val) {
+        if(indices.count(val))return false;
+        int index=nums.size();
+        nums.emplace_back(val);
+        indices[val]=index;
+        return true;
+    }
+    
+    bool remove(int val) {
+        if(!indices.count(val))return false;
+        int index=indices[val];
+        int last=nums.back();
+        nums[index]=last;
+        indices[last]=index;
+        nums.pop_back();
+        indices.erase(val);
+        return true;
+    }
+    
+    int getRandom() {
+        int randomIndex=rand()%nums.size();
+        return nums[randomIndex];
+    }
+    private:
+         vector<int> nums;
+         unordered_map<int,int> indices;
+};
+
+特别的emplace_back（val）操作，是一种特殊的在数组尾部插入新数据的方法，他比普通的push_back好在无需在新建一个临时变量存储val
