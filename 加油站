@@ -1,0 +1,27 @@
+题意：
+一个数组代表需求值，另一个代表所有补充值。若所有站点的总油量 ≥ 总消耗，则必定存在唯一解；否则无解。
+解答：
+这道题很明显可以使用贪心算法。从0号位置开始模拟，然后累加cost和gas的和。如果cost的和小于gas的和那么就继续累加。
+如果不然，则跳出循环，从当前累加位置开始从头求和（因为前面已经通过累加发现不可能从之前位置为起始点出发）
+代码如下
+class Solution {
+public:
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        int n=gas.size();
+        int x=0;
+        while(x<n){
+            int sumgas=0,sumcost=0;
+            int cnt=0;
+            while(cnt<n){
+                int j=(x+cnt)%n;
+                sumgas+=gas[j];
+                sumcost+=cost[j];
+                if(sumcost>sumgas)break;
+                cnt++;
+            }
+            if(cnt==n)return x;
+            else x=x+cnt+1;
+        }
+        return -1;
+    }
+};
