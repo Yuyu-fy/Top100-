@@ -1,0 +1,24 @@
+题意：给定一个数组，每个位置至少分配1的数额，如果该位置数值比左侧或者右侧大，那他分配的数额也要比左侧或者右侧大。求分配数额之和最小是多少
+题解：
+第一种方法，两次遍历，因为每一个位置都有可能比他的左侧或者右侧大，所以就从左往右便利一次，再从右往左便利一次，那个大保留哪个，因为大的那个才是真实值。
+时间复杂度O（n），空间复杂度O（n）
+class Solution {
+public:
+    int candy(vector<int>& ratings) {
+        int n=ratings.size();
+        vector<int> left(n);
+        for(int i=0;i<n;++i){
+            if(i>0&&ratings[i]>ratings[i-1])left[i]=left[i-1]+1;
+            else left[i]=1;
+        }
+        int right=0,ret=0;
+        for(int i=n-1;i>=0;--i){
+            if(i<n-1&&ratings[i]>ratings[i+1])right++;
+            else right=1;
+            ret+=max(left[i],right);
+        }
+        return ret;
+    }
+};
+
+第二种方法
