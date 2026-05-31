@@ -21,4 +21,27 @@ public:
     }
 };
 
-第二种方法
+第二种方法:空间复杂度变成O（1），不维护一个新的数组，只维护一个简单的升序序列和降序序列的长度，即可。只需要特别注意，如果升序数列和降序数列一样长的时候，要把之前升序序列最后一个数归为讲序数列的第一个数
+class Solution {
+public:
+    int candy(vector<int>& ratings) {
+        int n=ratings.size();
+        int inc=1,dec=0,pre=1,ret=1;
+        for(int i=1;i<n;++i){
+            if(ratings[i]>=ratings[i-1]){
+                dec=0;
+                pre=ratings[i]==ratings[i-1]?1:pre+1;
+                ret+=pre;
+                inc=pre;
+            }
+            else{
+                dec++;
+                if(dec==inc)dec++;
+                ret+=dec;
+                pre=1;
+    
+            }
+        }
+        return ret;
+    }
+};
